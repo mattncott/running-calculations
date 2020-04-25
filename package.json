@@ -1,6 +1,6 @@
 {
   "name": "running-calculations",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "lib/index.ts",
   "types": "lib/types.d.ts",
