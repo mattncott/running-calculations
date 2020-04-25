@@ -2,7 +2,7 @@
   "name": "running-calculations",
   "version": "1.0.0",
   "description": "",
-  "main": "lib/index.js",
+  "main": "src/index.ts",
   "scripts": {
     "test": "jest"
   },
