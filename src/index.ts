@@ -1,13 +1,12 @@
 export enum measurements {
-    miles = 'Miles',
-    kilometers = 'Kilometers',
-  }
-  
-  export type coordinate = {
-    lat: number;
-    lng: number;
-  };
-  
+  miles = 'Miles',
+  kilometers = 'Kilometers',
+}
+
+export type coordinate = {
+  lat: number;
+  lng: number;
+};
 
 /**
  * Convert elevation in metres
