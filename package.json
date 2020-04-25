@@ -2,8 +2,8 @@
   "name": "running-calculations",
   "version": "1.0.7",
   "description": "",
-  "main": "lib/index.ts",
-  "types": "lib/types.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/types.js",
   "scripts": {
     "test": "jest",
     "build": "tsc"
