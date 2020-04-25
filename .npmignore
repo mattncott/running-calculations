@@ -1,6 +1,5 @@
-src
+lib
 .vscode
 tsconfig.json
-.babelrc
 .gitignore
 .git
