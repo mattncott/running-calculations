@@ -1,4 +1,3 @@
-.vscode
+src
 tsconfig.json
-.gitignore
-.git
+tslint.json

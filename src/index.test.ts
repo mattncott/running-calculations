@@ -1,5 +1,4 @@
-import { calculateElevation, convertDistance } from './index';
-import { measurements } from './types';
+import { calculateElevation, convertDistance, measurements } from './index';
 
 test('Expect 1000 metres to be 0.62 miles', () => {
   expect(convertDistance(1000, measurements.miles)).toBe(0.62);
