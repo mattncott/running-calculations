@@ -1,10 +1,4 @@
-export enum measurements {miles = 'Miles', kilometers = 'Kilometers'};
-
-export type coordinate = {
-    lat: number,
-    lng: number
-}
-
+import { measurements, coordinate } from './types';
 /**
  * Convert elevation in metres
  * @param elevation 
