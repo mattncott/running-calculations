@@ -12,6 +12,7 @@ export type coordinate = {
  * Convert elevation in metres
  * @param elevation
  * @param measurement
+ * @throws Error
  */
 export function calculateElevation(elevation: number, measurement: measurements): number {
   switch (measurement) {
@@ -72,10 +73,11 @@ export function speedFromCoordinates(start: coordinate, end: coordinate): number
  * Calculate Efficiency Factor of a run from Normalised Graded Pace and Heart Rate
  * @param ngp
  * @param hr
+ * @return number or null
  */
-export function calculateEfficiencyFactor(ngp: any, hr: any): number {
+export function calculateEfficiencyFactor(ngp: any, hr: any): number | null {
   if (hr === null) {
-    throw new Error('Heartrate cannot be null');
+    return null;
   }
 
   const ngs = 60 / ngp;
@@ -88,6 +90,7 @@ export function calculateEfficiencyFactor(ngp: any, hr: any): number {
  * Convert distance in metres to miles/kilometers. Rounded to 2 dp
  * @param metres: number
  * @param measurements: measurements
+ * @throws Error
  */
 export function convertDistance(metres: number, measure: measurements): number {
   let answer = null;
@@ -106,6 +109,7 @@ export function convertDistance(metres: number, measure: measurements): number {
  * Calculate average pace in time from ms
  * @param time
  * @param measurements
+ * @throws Error
  */
 export function calculateAveragePace(time: number, measure: measurements): string {
   let converted = null;
@@ -137,6 +141,7 @@ export function calculateAveragePace(time: number, measure: measurements): strin
  *
  * @param pace
  * @param measurements the pace this is in
+ * @throws Error
  */
 export function reverseAveragePace(pace: string, measure: measurements): number {
   const hms = '00:' + pace;

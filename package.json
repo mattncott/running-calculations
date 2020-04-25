@@ -1,7 +1,7 @@
 {
   "name": "running-calculations",
   "version": "1.0.9",
-  "description": "",
+  "description": "A project containing functions to analyse a runners training data (from a specific run).",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
