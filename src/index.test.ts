@@ -17,7 +17,6 @@ test('Expect 1 metre to be 3.2808 feet', () => {
 
 test('Expect a race time of 1:24:32 for a half marathon to be 86.4% VO2Max', () => {
   const time = convertTimeToSeconds('01:24:35');
-  console.log(time);
   expect(calculatePercentageVO2Max(time)).toBe(86.43);
 });
 
