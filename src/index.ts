@@ -51,7 +51,7 @@ export function calculatePercentageVO2Max(raceTime: number, doNotFormat?: boolea
     return percentageVO2Max;
   }
 
-  return Math.round((percentageVO2Max * 100 + Number.EPSILON) * 100) / 100;  
+  return Math.round((percentageVO2Max * 100 + Number.EPSILON) * 100) / 100;
 }
 
 /**
