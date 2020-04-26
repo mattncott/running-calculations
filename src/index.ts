@@ -9,6 +9,52 @@ export type coordinate = {
 };
 
 /**
+ * Calculate a VDot score from a recent performance.
+ *
+ * Takes race time in seconds and race distance in metres.
+ *
+ * Based on the calulcations in the Jack Daniels Tables
+ *
+ * @param raceTime in seconds
+ * @param raceDistance in metres
+ * @return number
+ */
+export function calculateVDOT(raceTime: number, raceDistance: number): number {
+  // Will be converted to minutes inside the function call
+  const VO2Max = calculatePercentageVO2Max(raceTime, false);
+  raceTime = raceTime / 60;
+  const vDOT = (-4.6 + 0.182258 * (raceDistance / raceTime) + 0.000104 * Math.pow(raceDistance / raceTime, 2)) / VO2Max;
+
+  return Math.round((vDOT + Number.EPSILON) * 100) / 100;
+}
+
+/**
+ * Calculate the VO2Max of a runner from a performance.
+ * Calculation translated from the Jack Daniels Tables
+ *
+ * The format toggle is required for some other functions.
+ * Some are looking for VO2Max before, it is converted into a decimal
+ *
+ * If formatted, percentage is rounded to 2 decimal places
+ * @param raceTime number
+ * @param format boolean return in percentage or decimal
+ * @return number
+ */
+export function calculatePercentageVO2Max(raceTime: number, format: boolean): number {
+  // Equation from JackDaniels Tables
+  // The JackDaniels function is expecting the raceTime to be in minutes
+  raceTime = raceTime / 60;
+  const percentageVO2Max =
+    0.8 + 0.1894393 * Math.exp(-0.012778 * raceTime) + 0.2989558 * Math.exp(-0.1932605 * raceTime);
+
+  if (format) {
+    return Math.round((percentageVO2Max * 100 + Number.EPSILON) * 100) / 100;
+  }
+
+  return percentageVO2Max;
+}
+
+/**
  * Convert elevation in metres
  * @param elevation
  * @param measurement
