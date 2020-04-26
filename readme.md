@@ -118,6 +118,26 @@ Uses functional threshold pace to calculate training zones for a runner to train
     const speed = calculateZonesFromFTP(pace);
 ```
 
+### Calculating percentage of VO2 MAX
+Using the finish time for a race, calculate the % of VO2 Max. 
+Calculation from the Jack Daniels Tables
+
+```typescript
+    import { calculatePercentageVO2Max } from 'running-calculations';
+    const raceTime = 5075; // 1:24:35 in seconds
+    const VO2Max = calculatePercentageVO2Max(raceTime); // 86.4 %
+```
+
+### Calculating VDot score from a race performance
+Using the finish time for a race, calculate the VDot score of the race.
+Calculation from the Jack Daniels Tables
+
+```typescript
+    import { calculateVDOT } from 'running-calculations';
+    const raceTime = 5075; // 1:24:35 in seconds
+    const VO2Max = calculateVDOT(raceTime); // 54.76 VDot Score
+```
+
 ## Running the tests
 
 ```

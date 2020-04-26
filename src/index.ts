@@ -21,7 +21,7 @@ export type coordinate = {
  */
 export function calculateVDOT(raceTime: number, raceDistance: number): number {
   // Will be converted to minutes inside the function call
-  const VO2Max = calculatePercentageVO2Max(raceTime, false);
+  const VO2Max = calculatePercentageVO2Max(raceTime, true);
   raceTime = raceTime / 60;
   const vDOT = (-4.6 + 0.182258 * (raceDistance / raceTime) + 0.000104 * Math.pow(raceDistance / raceTime, 2)) / VO2Max;
 
@@ -37,21 +37,21 @@ export function calculateVDOT(raceTime: number, raceDistance: number): number {
  *
  * If formatted, percentage is rounded to 2 decimal places
  * @param raceTime number
- * @param format boolean return in percentage or decimal
+ * @param doNotformat boolean flag to not return the percentage value but the RAW decimal value
  * @return number
  */
-export function calculatePercentageVO2Max(raceTime: number, format: boolean): number {
+export function calculatePercentageVO2Max(raceTime: number, doNotFormat?: boolean): number {
   // Equation from JackDaniels Tables
   // The JackDaniels function is expecting the raceTime to be in minutes
   raceTime = raceTime / 60;
   const percentageVO2Max =
     0.8 + 0.1894393 * Math.exp(-0.012778 * raceTime) + 0.2989558 * Math.exp(-0.1932605 * raceTime);
 
-  if (format) {
-    return Math.round((percentageVO2Max * 100 + Number.EPSILON) * 100) / 100;
+  if (doNotFormat) {
+    return percentageVO2Max;
   }
 
-  return percentageVO2Max;
+  return Math.round((percentageVO2Max * 100 + Number.EPSILON) * 100) / 100;  
 }
 
 /**
