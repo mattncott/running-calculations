@@ -13,7 +13,7 @@ There are no prerequisites required for this project,
 ### Installing
 running-calculations can be used in both node.js and in the browser.
 
-Install math.js using [npm](https://www.npmjs.com/package/running-calculations):
+Install running-calculations using [npm](https://www.npmjs.com/package/running-calculations):
 ```
 npm install running-calculations
 ```
