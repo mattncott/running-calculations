@@ -138,11 +138,76 @@ Calculation from the Jack Daniels Tables
     const VO2Max = calculateVDOT(raceTime); // 54.76 VDot Score
 ```
 
-## Running the tests
+### Calculating the training stress score of a run
+Using funtional threshold pace, average pace (ideally a graded pace), and time (in seconds),
+calculate the training stress score of a run
 
+```typescript
+    import { calculateTrainingStressScore, reverseAveragePace, measurements } from 'running-calculations';
+    const ngp = reverseAveragePace('6:28', measurements.miles);
+    const ftp = reverseAveragePace('6:18', measurements.miles);
+    const time = 5075;
+
+    calculateTrainingStressScore(ftp, ngp, time)) // 133.8
+```
+
+### Calculating the chronic training load of a runner
+Calculate the chronic training load of a runner using their their previous runs TSS over a 42 day period.
+
+```typescript
+  import { calculateChronicTrainingLoad } from 'running-calculations';
+  const tssData = [
+      50.17, 37.07, 51.68,  68.96,
+      61.05, 70.57, 91.11,  52.73,
+      55.37, 43.79, 42.06,   2.02,
+       7.19, 55.71, 45.72,  36.62,
+      32.81, 32.56, 39.39, 114.48,
+      10.05, 49.58, 84.34
+    ];
+  calculateChronicTrainingLoad(tssData) // 49.35
+```
+
+### Calculating the acute training load of a runner
+Calculate the acute training load of a runner using their their previous runs TSS over a 7 day period.
+
+```typescript
+  import { calculateAcuteTrainingLoad } from 'running-calculations';
+  const tssData = [50.17,37.07];
+  calculateAcuteTrainingLoad(tssData) // 43.62
+```
+
+### Calculating the training stress balance
+Calculate the acute training load of a runner using their their previous runs TSS over a 7 day period.
+
+```typescript
+  import { calculateChronicTrainingLoad, calculateAcuteTrainingLoad, calculateTrainingStressBalance } from 'running-calculations';
+  const ctl = calculateChronicTrainingLoad(...);
+  const atl = calculateAcuteTrainingLoad(...);
+
+  calculateTrainingStressBalance(ctl, atl)) // 5.73
+```
+
+### Calculating the chronic training load of a runner
+Calculate the acute training load of a runner using their their previous runs TSS over a 7 day period.
+
+```typescript
+  import { reverseAveragePace, calculateIntensityFactor } from 'running-calculations';
+  const ngp = reverseAveragePace('6:28', measurements.miles);
+  const ftp = reverseAveragePace('6:18', measurements.miles);
+
+  calculateIntensityFactor(ftp, ngp) // 0.97
+```
+
+## Running the tests
 ```
 npm run test
 ```
+## Honourable mentions
+The below greatly assisted in the research and authoring of the calculations provided in this package.
+
+* [Euadet Training Bot](https://github.com/eaudet/trainingbot).
+* [Jack Daniels Tables](http://www.electricblues.com/html/runpro.html).
+
 ## Contributing
 
 To contribute on this project, please contact [mattncott](https://github.com/mattncott).

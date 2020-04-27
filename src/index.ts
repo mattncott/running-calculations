@@ -1,12 +1,78 @@
+/**
+ * Enumeration of supported measurements used for speed and distance conversions.
+ */
 export enum measurements {
   miles = 'Miles',
   kilometers = 'Kilometers',
 }
 
+/**
+ * Coordinate Type. Typically used within an array
+ */
 export type coordinate = {
   lat: number;
   lng: number;
 };
+
+/**
+ * Training Stress Balance:
+ * Yesterday's Fitness (CTL) - Yesterday's Fatigue (ATL)
+ *
+ * @param ctl number
+ * @param atl number
+ */
+export function calculateTrainingStressBalance(ctl: number, atl: number) {
+  return roundNumber(ctl - atl);
+}
+
+/**
+ * Calculate the acute training load from the past 7 days.
+ *
+ * ATL is calculated using the training stress scores from the past 7 days.
+ * @param tss
+ * @return number
+ */
+export function calculateAcuteTrainingLoad(tss: number[]): number {
+  return getWeightedAvg(tss, 7);
+}
+
+/**
+ * Calculate the chronic training load over the past 42 days.
+ *
+ * CTL is the exponential weighted average of training
+ * stress scores from the past 42 days.
+ *
+ * @param tss
+ * @return number
+ */
+export function calculateChronicTrainingLoad(tss: number[]): number {
+  return getWeightedAvg(tss, 42);
+}
+
+/**
+ * Calculates the training stress score of a run
+ *
+ * @param ftp The runners functional threshold pace
+ * @param ngp The normalised graded pace of a run (Average pace can also be used)
+ * @param seconds The duration of the run in seconds
+ * @return number
+ */
+export function calculateTrainingStressScore(ftp: number, ngp: number, seconds: number): number {
+  const intensityFactor = ngp / ftp;
+  const tSS = ((seconds * ngp * intensityFactor) / (ftp * 3600)) * 100;
+  return roundNumber(tSS);
+}
+
+/**
+ * Calculate the intensity factor of a specific run.
+ *
+ * @param ftp Function Threshold Pace
+ * @param ngp Normalised Graded Pace
+ * @return number
+ */
+export function calculateIntensityFactor(ftp: number, ngp: number): number {
+  return roundNumber(ngp / ftp);
+}
 
 /**
  * Calculate a VDot score from a recent performance.
@@ -25,7 +91,7 @@ export function calculateVDOT(raceTime: number, raceDistance: number): number {
   raceTime = raceTime / 60;
   const vDOT = (-4.6 + 0.182258 * (raceDistance / raceTime) + 0.000104 * Math.pow(raceDistance / raceTime, 2)) / VO2Max;
 
-  return Math.round((vDOT + Number.EPSILON) * 100) / 100;
+  return roundNumber(vDOT);
 }
 
 /**
@@ -51,7 +117,7 @@ export function calculatePercentageVO2Max(raceTime: number, doNotFormat?: boolea
     return percentageVO2Max;
   }
 
-  return Math.round((percentageVO2Max * 100 + Number.EPSILON) * 100) / 100;
+  return roundNumber(percentageVO2Max * 100);
 }
 
 /**
@@ -121,7 +187,11 @@ export function speedFromCoordinates(start: coordinate, end: coordinate): number
  * @param hr
  * @return number or null
  */
-export function calculateEfficiencyFactor(ngp: any, hr: any): number | null {
+export function calculateEfficiencyFactor(ngp: any, hr: number): number | null {
+  if (isNaN(ngp)) {
+    ngp = timeStringToFloat(ngp);
+  }
+
   if (hr === null) {
     return null;
   }
@@ -129,7 +199,7 @@ export function calculateEfficiencyFactor(ngp: any, hr: any): number | null {
   const ngs = 60 / ngp;
   const yardsPerMinute = (1760 * ngs) / 60;
   const ef = yardsPerMinute / hr;
-  return Math.round((ef + Number.EPSILON) * 100) / 100;
+  return roundNumber(ef);
 }
 
 /**
@@ -143,12 +213,12 @@ export function convertDistance(metres: number, measure: measurements): number {
   if (measure === measurements.kilometers) {
     answer = metres / 1000;
   } else if (measure === measurements.miles) {
-    answer = Math.round((metres * 0.00062137 + Number.EPSILON) * 100) / 100;
+    answer = roundNumber(metres * 0.00062137);
   } else {
     throw new Error('Unsupported Measurement');
   }
 
-  return Math.round((answer + Number.EPSILON) * 100) / 100;
+  return roundNumber(answer);
 }
 
 /**
@@ -176,7 +246,7 @@ export function calculateAveragePace(time: number, measure: measurements): strin
   const fraction = num - intpart;
   let seconds = fraction * 60;
 
-  seconds = Math.round(seconds);
+  seconds = roundNumber(seconds);
 
   return intpart + ':' + pad(seconds);
 }
@@ -235,7 +305,7 @@ export function calculateZonesFromFTP(ftp: number): any[] {
  * Pad a number into a string with prepended 0 if required
  * @param num
  */
-function pad(num: number) {
+function pad(num: number): string {
   return ('0' + num).slice(-2);
 }
 
@@ -243,6 +313,43 @@ function pad(num: number) {
  * Convert metres per second to mph
  * @param $metres
  */
-function convertToMPH($metres: number) {
+function convertToMPH($metres: number): number {
   return $metres * 2.2369;
+}
+
+/**
+ * Round a number to 2 decimal places
+ * @param valueToRound
+ */
+function roundNumber(valueToRound: number): number {
+  return Math.round((valueToRound + Number.EPSILON) * 100) / 100;
+}
+
+/**
+ * Convert a time string to a float number.
+ *
+ * EXAMPLE:
+ * 7:30 minutes would be converted to 7.5 minutes
+ *
+ * @param time
+ */
+function timeStringToFloat(time: string): number {
+  const hoursMinutes = time.split(/[.:]/);
+  const hours = parseInt(hoursMinutes[0], 10);
+  const minutes = hoursMinutes[1] ? parseInt(hoursMinutes[1], 10) : 0;
+  return hours + minutes / 60;
+}
+
+/**
+ * Calculate the exponential weighted average from an array of numbers
+ * @param tSS array of numbers
+ * @param days number of days
+ */
+function getWeightedAvg(tSS: number[], days: number) {
+  const interation = Math.min(days, tSS.length);
+  let lastDaysTss = 0.0;
+  for (let i = 0; i < interation; i++) {
+    lastDaysTss = lastDaysTss + tSS[i];
+  }
+  return roundNumber(lastDaysTss / interation);
 }

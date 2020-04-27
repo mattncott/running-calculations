@@ -2,6 +2,12 @@
   "name": "running-calculations",
   "version": "1.0.12",
   "description": "A project containing functions to analyse a runners training data (from a specific run).",
+  "keywords": [
+    "running",
+    "training",
+    "jack daniels",
+    "calculations"
+  ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
