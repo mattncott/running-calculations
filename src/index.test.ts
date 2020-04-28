@@ -17,7 +17,6 @@ import {
 test('Expect 6:18 to be the correct time once reversed', () => {
   const time = reverseAveragePace('6:18', measurements.miles);
   expect(calculateAveragePace(time, measurements.miles)).toBe('6:18');
-
 });
 
 test('Expect 1000 metres to be 0.62 miles', () => {
