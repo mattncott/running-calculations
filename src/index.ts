@@ -244,7 +244,7 @@ export function calculateAveragePace(time: number, measure: measurements): strin
   const intpart = Math.floor(num);
 
   const fraction = num - intpart;
-  let seconds = Math.round(fraction * 60);
+  const seconds = Math.round(fraction * 60);
 
   return intpart + ':' + pad(seconds);
 }
