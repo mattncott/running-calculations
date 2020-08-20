@@ -1,6 +1,6 @@
 {
   "name": "running-calculations",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "A project containing functions to analyse a runners training data (from a specific run).",
   "keywords": [
     "running",
